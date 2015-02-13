@@ -75,16 +75,19 @@ public class Game {
         return win;
     }
 
-    private boolean checkForFlush(Card[] cards) {
-        boolean flush = true;
-        int i = cards.length - 1;
-        while (i > 0 && flush) {
-            flush = cards[i--].getSuit() == cards[i].getSuit();
-        }
-        return flush;
+    private WinCondition checkForFlushAndStraight(Card[] cards) {
+        List<Card> checkList = Arrays.asList(cards);
+        Collections.sort(checkList);
+
+        boolean flush = false;
+        if (checkList.get(0).getSuit() == checkList.get(4).getSuit()) flush = true;
+        if (checkList.get(4).getValue().ordinal() - checkList.get(0).getValue().ordinal() == 4)
+            return flush ? checkList.get(4).getValue() == CardValue.ACE ? WinCondition.ROYAL_FLUSH : WinCondition.STRAIGHT_FLUSH : WinCondition.STRAIGHT;
+        return flush?WinCondition.FLUSH:WinCondition.NONE;
     }
 
     private WinCondition checkForKind(Card[] cards) {
+
         Map<CardValue, Integer> index = new HashMap<CardValue, Integer>();
 
         for (Card card : cards) {
@@ -93,8 +96,6 @@ public class Game {
             index.put(card.getValue(), count);
         }
 
-        boolean flush = checkForFlush(cards);
-
         if (index.containsValue(4)) return WinCondition.FOUR_OF_KIND;
         if (index.containsValue(3) && index.size() == 3) return WinCondition.THREE_OF_KIND;
         if (index.containsValue(2)) {
@@ -102,26 +103,7 @@ public class Game {
             if (index.size() == 3) return WinCondition.TWO_PAIR;
             return WinCondition.PAIR;
         }
-        if (index.containsValue(1)) {
-            boolean straight = false;
-            List<CardValue> cardValues = new LinkedList<CardValue>(index.keySet());
-            Collections.sort(cardValues);
-            CardValue current = cardValues.remove(0);
-            while (!cardValues.isEmpty()) {
-                CardValue next = cardValues.remove(0);
-                System.out.println(current + " " + next + " " + straight);
-                if (current.ordinal() != next.ordinal() - 1) {
-                    straight = false;
-                    break;
-                } else {
-                    straight = true;
-                }
-                current = next;
-            }
-            if (straight) {
-                return flush ? WinCondition.STRAIGHT_FLUSH : WinCondition.STRAIGHT;
-            }
-        }
-        return flush ? WinCondition.FLUSH : WinCondition.NONE;
+
+        return checkForFlushAndStraight(cards);
     }
 }

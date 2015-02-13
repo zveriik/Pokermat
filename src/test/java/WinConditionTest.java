@@ -21,15 +21,31 @@ public class WinConditionTest {
     }
 
     @Test
-    public void testStraight(){
+    public void testStraights(){
         Game game = new Game();
         Table table = new Table();
-        createStraight(table.getCardsOnDesk());
+        WinCondition win;
+
+        createStraights(table.getCardsOnDesk(), false, false);
         System.out.println(table);
-        WinCondition win = game.checkCombination(table);
+        win = game.checkCombination(table);
         System.out.println(win);
         assertNotNull(win);
         assertEquals(win, WinCondition.STRAIGHT);
+
+        createStraights(table.getCardsOnDesk(), true, false);
+        System.out.println(table);
+        win = game.checkCombination(table);
+        System.out.println(win);
+        assertNotNull(win);
+        assertEquals(win, WinCondition.STRAIGHT_FLUSH);
+
+        createStraights(table.getCardsOnDesk(), true, true);
+        System.out.println(table);
+        win = game.checkCombination(table);
+        System.out.println(win);
+        assertNotNull(win);
+        assertEquals(win, WinCondition.ROYAL_FLUSH);
     }
 
     private void createFlush (Card[] cards){
@@ -38,11 +54,11 @@ public class WinConditionTest {
         }
     }
 
-    private void createStraight (Card[] cards){
+    private void createStraights(Card[] cards, boolean flush, boolean royal){
         for (int i=0; i<5; i++){
             Card card = new Card();
-            card.setSuit(i>2?CardSuit.CLUBS:CardSuit.DIAMONDS);
-            card.setValue(CardValue.values()[i]);
+            card.setSuit(!flush?i>2?CardSuit.CLUBS:CardSuit.DIAMONDS: CardSuit.DIAMONDS);
+            card.setValue(CardValue.values()[royal?i+8:i]);
             cards[i] = card;
         }
     }
