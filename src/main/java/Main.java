@@ -34,7 +34,7 @@ public class Main {
             }
 
             System.out.println(table);
-            System.out.println(deck.getDeck().size());
+//            System.out.println(deck.getDeck().size());
 
             List<Integer> holds = game.readHolds();
             System.out.println(holds);
