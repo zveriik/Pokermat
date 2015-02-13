@@ -1,0 +1,9 @@
+entity\Table.class
+Main.class
+entity\CardValue.class
+entity\Player.class
+entity\CardSuit.class
+entity\Deck.class
+entity\Card.class
+entity\WinCondition.class
+entity\Game.class
