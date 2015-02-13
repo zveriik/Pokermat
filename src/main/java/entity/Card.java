@@ -3,7 +3,7 @@ package entity;
 /**
  * Created by Zveriki on 09.02.2015.
  */
-public class Card implements Comparable<Card>{
+public class Card {
 
     private CardSuit suit;
 
@@ -38,9 +38,4 @@ public class Card implements Comparable<Card>{
         return "Card[suit=" + suit + ", value=" + value + "]";
     }
 
-    @Override
-    public int compareTo(Card that) {
-        return this.value.ordinal() == that.value.ordinal()? (this.suit.ordinal()>that.suit.ordinal()?
-                1:(this.suit.ordinal()<that.suit.ordinal()?-1:0)):(this.value.ordinal() > that.value.ordinal()? 1:-1);
-    }
 }

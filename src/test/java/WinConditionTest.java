@@ -12,12 +12,25 @@ public class WinConditionTest {
     public void testFlush(){
         Game game = new Game();
         Table table = new Table();
+
         createFlush(table.getCardsOnDesk());
         System.out.println(table);
         WinCondition win = game.checkCombination(table);
         System.out.println(win);
         assertNotNull(win);
         assertEquals(win, WinCondition.FLUSH);
+
+        Card[] cards = table.getCardsOnDesk();
+        cards[0] = new Card(CardSuit.SPADES, CardValue.TWO);
+        cards[1] = new Card(CardSuit.CLUBS, CardValue.THREE);
+        cards[2] = new Card(CardSuit.HEARTS, CardValue.FOUR);
+        cards[3] = new Card(CardSuit.DIAMONDS, CardValue.FIVE);
+        cards[4] = new Card(CardSuit.SPADES, CardValue.SEVEN);
+
+        win = game.checkCombination(table);
+        assertNotNull(win);
+        assertEquals(win, WinCondition.NONE);
+
     }
 
     @Test

@@ -65,10 +65,6 @@ public class Game {
         return deck;
     }
 
-    public void reHolds(List<Integer> holds) {
-
-    }
-
     public WinCondition checkCombination(Table table) {
         Card[] cardsOnDesk = table.getCardsOnDesk();
         WinCondition win = checkForKind(cardsOnDesk);
@@ -76,11 +72,25 @@ public class Game {
     }
 
     private WinCondition checkForFlushAndStraight(Card[] cards) {
-        List<Card> checkList = Arrays.asList(cards);
-        Collections.sort(checkList);
-
         boolean flush = false;
+        List<Card> checkList = Arrays.asList(cards);
+
+        Collections.sort(checkList, new Comparator<Card>() {
+            @Override
+            public int compare(Card o1, Card o2) {
+                return o1.getSuit().ordinal()>o2.getSuit().ordinal()?1:o1.getSuit().ordinal() <o2.getSuit().ordinal()?-1:0;
+            }
+        });
+
         if (checkList.get(0).getSuit() == checkList.get(4).getSuit()) flush = true;
+
+        Collections.sort(checkList, new Comparator<Card>() {
+            @Override
+            public int compare(Card o1, Card o2) {
+                return o1.getValue().ordinal()>o2.getValue().ordinal()?1:o1.getValue().ordinal() <o2.getValue().ordinal()?-1:0;
+            }
+        });
+
         if (checkList.get(4).getValue().ordinal() - checkList.get(0).getValue().ordinal() == 4)
             return flush ? checkList.get(4).getValue() == CardValue.ACE ? WinCondition.ROYAL_FLUSH : WinCondition.STRAIGHT_FLUSH : WinCondition.STRAIGHT;
         return flush?WinCondition.FLUSH:WinCondition.NONE;
