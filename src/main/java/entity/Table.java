@@ -16,6 +16,14 @@ public class Table {
         return cardsOnDesk;
     }
 
+    public void setCardsOnDesk(Card[] cards){
+        if (cards.length == cardsOnDesk.length) {
+            for (int i = 0; i <cardsOnDesk.length; i++){
+                cardsOnDesk[i] = cards[i];
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
